@@ -65,6 +65,12 @@ jobs:
     - name: poetry lint
       run: |
         poetry run task lint
+    - name: Cache build venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: /home/runner/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-venv
 
 
   formatter:
@@ -79,6 +85,12 @@ jobs:
     - name: poetry formatter
       run: |
         poetry run task formatter
+    - name: Cache build venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: /home/runner/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-venv
 
 
   security:
@@ -93,7 +105,13 @@ jobs:
     - name: poetry security
       run: |
         poetry run task security
-
+    - name: Cache build venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: /home/runner/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-venv
+        
 
   test:
     runs-on: ubuntu-latest
@@ -102,12 +120,17 @@ jobs:
       run:
         working-directory: ./example-app
         
-    needs: build
+    needs: [build, lint, formatter, security]
     steps:
     - name: poetry test
       run: |
         poetry run task test
-
+    - name: Cache build venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: /home/runner/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-venv
 
 
         
