@@ -62,15 +62,32 @@ jobs:
         
     needs: build
     steps:
-    - name: poetry lint
-      run: |
-        poetry run task lint
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+
+    - name: Install Poetry Action
+    # You may pin to the exact commit or the version.
+    # uses: snok/install-poetry@93ada01c735cc8a383ce0ce2ae205a21c415379b
+      uses: snok/install-poetry@v1.3.4
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: false
+        installer-parallel: true 
+
     - name: Cache build venv
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
         path: /home/runner/.cache/pypoetry/virtualenvs
         key: ${{ runner.os }}-venv
+    
+    - name: poetry lint
+      run: |
+        poetry run task lint
+
 
 
   formatter:
@@ -82,15 +99,31 @@ jobs:
         
     needs: build
     steps:
-    - name: poetry formatter
-      run: |
-        poetry run task formatter
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+
+    - name: Install Poetry Action
+    # You may pin to the exact commit or the version.
+    # uses: snok/install-poetry@93ada01c735cc8a383ce0ce2ae205a21c415379b
+      uses: snok/install-poetry@v1.3.4
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: false
+        installer-parallel: true 
+
     - name: Cache build venv
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
         path: /home/runner/.cache/pypoetry/virtualenvs
         key: ${{ runner.os }}-venv
+    
+    - name: poetry formatter
+      run: |
+        poetry run task formatter
 
 
   security:
@@ -102,15 +135,32 @@ jobs:
         
     needs: build
     steps:
-    - name: poetry security
-      run: |
-        poetry run task security
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+
+    - name: Install Poetry Action
+    # You may pin to the exact commit or the version.
+    # uses: snok/install-poetry@93ada01c735cc8a383ce0ce2ae205a21c415379b
+      uses: snok/install-poetry@v1.3.4
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: false
+        installer-parallel: true 
+
     - name: Cache build venv
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
         path: /home/runner/.cache/pypoetry/virtualenvs
         key: ${{ runner.os }}-venv
+    
+    - name: poetry security
+      run: |
+        poetry run task security
+        
         
 
   test:
@@ -122,15 +172,31 @@ jobs:
         
     needs: [build, lint, formatter, security]
     steps:
-    - name: poetry test
-      run: |
-        poetry run task test
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+
+    - name: Install Poetry Action
+    # You may pin to the exact commit or the version.
+    # uses: snok/install-poetry@93ada01c735cc8a383ce0ce2ae205a21c415379b
+      uses: snok/install-poetry@v1.3.4
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: false
+        installer-parallel: true 
+
     - name: Cache build venv
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
         path: /home/runner/.cache/pypoetry/virtualenvs
         key: ${{ runner.os }}-venv
+    
+    - name: poetry test
+      run: |
+        poetry run task test
 
 
         
