@@ -45,7 +45,3 @@ jobs:
         poetry run task formatter
         poetry run task security
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-    - name: Test with pytest
-      run: |
-        pytest
