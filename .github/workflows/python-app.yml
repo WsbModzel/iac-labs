@@ -13,6 +13,7 @@ permissions:
   contents: read
 
 jobs:
+
   build:
 
     runs-on: ubuntu-latest
@@ -40,8 +41,63 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install --no-root
-        poetry run task test
-        poetry run task lint
-        poetry run task formatter
-        poetry run task security
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    
+  lint:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./example-app
+        
+    needs: build
+    steps:
+    - name: poetry lint
+      run: |
+        poetry run task lint
+
+
+  formatter:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./example-app
+        
+    needs: build
+    steps:
+    - name: poetry formatter
+      run: |
+        poetry run task formatter
+
+
+  security:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./example-app
+        
+    needs: build
+    steps:
+    - name: poetry security
+      run: |
+        poetry run task security
+
+
+  test:
+    runs-on: ubuntu-latest
+  
+    defaults:
+      run:
+        working-directory: ./example-app
+        
+    needs: build
+    steps:
+    - name: poetry test
+      run: |
+        poetry run task test
+
+
+
+        
